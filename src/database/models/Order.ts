@@ -1,16 +1,17 @@
 import DefaultAttributes from "./DefaultAttributes";
-import { Column, Entity, ManyToOne, JoinColumn, JoinTable, ManyToMany, OneToMany } from "typeorm";
-import ShoppingCartItems from "./ShoppingCartItems"
+import { Entity, JoinColumn, OneToOne, OneToMany } from "typeorm";
 import User from "./User"
+import ShoppingCart from "./ShoppingCart";
 
 @Entity('order')
 export default class Order extends DefaultAttributes {
 
-    @ManyToMany(type => ShoppingCartItems , shoppingcartitems => ShoppingCartItems )
-    shoppingcartitems:ShoppingCartItems[]
+    @OneToOne(type => ShoppingCart , shoppingcart => ShoppingCart )
+    @JoinColumn({ name: 'shopping_cart' })
+    shoppingcart: ShoppingCart
 
-    @ManyToOne(type => User , user => User )
-    user:User[]
+    @OneToMany(type => User , user => User )
+    user: User
 
 
 

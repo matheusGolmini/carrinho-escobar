@@ -1,5 +1,5 @@
 import DefaultAttributes from "./DefaultAttributes";
-import { Column, Entity, ManyToOne, JoinColumn, JoinTable, ManyToMany, OneToMany } from "typeorm";
+import { Column, Entity, ManyToMany } from "typeorm";
 import ShoppingCartItems from "./ShoppingCartItems"
 
 @Entity('product')
@@ -14,7 +14,7 @@ export default class Product extends DefaultAttributes {
     amount:number
 
     @ManyToMany(type => ShoppingCartItems , shoppingcartitems => ShoppingCartItems )
-    shoppingcartitems:ShoppingCartItems[]
+    shoppingcartitems: ShoppingCartItems[]
 
 
 }

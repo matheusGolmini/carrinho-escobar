@@ -1,5 +1,5 @@
 import DefaultAttributes from "./DefaultAttributes";
-import { Column, Entity, ManyToOne, JoinColumn, JoinTable, ManyToMany, OneToMany } from "typeorm";
+import { Column, Entity, ManyToOne, OneToMany} from "typeorm";
 import User from "./User";
 
 @Entity('address')
@@ -19,8 +19,8 @@ export default class Address extends DefaultAttributes {
     @Column()
     number:number
 
-    @ManyToMany(type => User , user => User )
-    user:User[]
+    @OneToMany(type => User , user => User )
+    user:User
 
     
 }

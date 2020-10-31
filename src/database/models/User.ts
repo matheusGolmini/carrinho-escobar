@@ -11,10 +11,10 @@ export default class User extends DefaultAttributes {
     @Column()
     password: string
 
-    @OneToMany(type => Address , address => Address )
-    address: Address
+    @ManyToOne(type => Address , address => Address )
+    address: Address[]
 
-    @OneToMany(type => Order , order => Order )
-    order: Order
+    @ManyToOne(type => Order , order => Order )
+    order: Order[]
 
 }

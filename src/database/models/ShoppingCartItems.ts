@@ -9,9 +9,10 @@ export default class ShoppingCartItems extends DefaultAttributes {
     amount:number
 
     @ManyToMany(type => Product , product => Product )
+    @JoinTable({name: 'shoppingcartitems_product'})
     product:Product[]
 
-    @ManyToOne(type => ShoppingCart , shoppingcart => ShoppingCart )
+    @ManyToMany(type => ShoppingCart , shoppingcart => ShoppingCart )
     shoppingcart:ShoppingCart[]
 
 }
