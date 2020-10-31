@@ -5,6 +5,7 @@ import { getRepository } from 'typeorm'
 
 export async function createUser(req: Request, res: Response): Promise<Response> {
     const { user } = req.body
+    console.log(user)
     user.password = bcrypt.hashSync(user.password, 10)
     const instanceRepo = getRepository('user')
 
