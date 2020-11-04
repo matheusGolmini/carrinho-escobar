@@ -5,31 +5,44 @@ export async function createProductItem(req: Request, res: Response){
 
     const { produto } = req.body
 
+    let result2 : any
 
     const instanceRepo2 = getRepository('shoppingcart')
+    try {
 
-    console.log("aqui")
+        result2 = await instanceRepo2.query(`select * from shoppingcart s  
+        where s."userId" = '${produto.user}'
+        and s.finished is false 
+        limit 1`)
 
-    let result2 : any = await instanceRepo2.findOne({ where: [{ user:produto.user }, {finished:false} ] })
-    console.log(result2)
-    if(!result2){
-        result2 = await instanceRepo2.save({user:produto.user, finished:false})
+        if(!result2.length){
+            result2 = await instanceRepo2.save({user:produto.user, finished:false})
+            produto.shoppingcart = result2.id
+        }else {
+            produto.shoppingcart = result2[0].id
+        }
+        
+    } catch (error) {
+        console.log(error)
     }
     
-    produto.shoppingcart = result2.id
-
+    
     try {
-        console.log("aqui 1")
         const instanceRepo = getRepository('shoppingcartitems')
-        let result3 : any = await instanceRepo.findOne({where: [ { user:produto.user}, {shoppingcart:result2.id}, {produtoId:produto.produtoId }  ]})
-        let response : any 
-
-        if(!result3){
+        let result3 : any = await instanceRepo.query(`select * from shoppingcartitems s2  
+        where s2."produtoId" = '${produto.produtoId}'
+        and s2."shoppingcartId" = '${produto.shoppingcart}'
+        and s2."userId" = '${produto.user}'
+        limit 1`)
+       
+       let response : any 
+        console.log("AQUI "+JSON.stringify(result3))
+        if(!result3.length){
             response = await instanceRepo.save(produto)
 
         }else{
-            result3.amount += produto.amount
-            response = await instanceRepo.save(result3)
+            result3[0].amount += produto.amount
+            response = await instanceRepo.save(result3[0])
         }
         return res.status(200).json(response)    
         
